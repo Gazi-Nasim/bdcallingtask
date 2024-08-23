@@ -13,7 +13,6 @@ function CreateUser() {
     );
     const [Roles, setRoles] = useState([]);
     const [returnError, setReturnError] = useState([]);
-    const userData = useSelector((state) => state?.credential?.credentialData);
 
     const [user, setUser] = useState({
         name: "",

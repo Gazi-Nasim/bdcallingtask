@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "./layouts/Navbar";
 import { Navigate, NavLink, useNavigate } from "react-router-dom";
 import Footer from "./layouts/Footer";
@@ -8,9 +8,10 @@ import axios from "axios";
 import { addPermissions } from "../redux/slices/credentialSlice";
 
 function Dashboard() {
-    const navigate = useNavigate();
-    const userData = useSelector((state) => state?.credential?.credentialData);
     let token = localStorage.getItem("token");
+    const navigate = useNavigate();
+    const [returnError, setReturnError] = useState([]);
+    const userData = useSelector((state) => state?.credential?.credentialData);
     const dispatch = useDispatch();
 
     const getRoles = async () => {
@@ -29,6 +30,10 @@ function Dashboard() {
             dispatch(addPermissions(permssionAry));
             // console.log(data);
         } catch (error) {
+            setReturnError("Token Expired Login Again !!");
+            setTimeout(() => {
+                setReturnError("");
+            }, 10000);
             console.error("Login error:", error);
         }
     };
@@ -53,6 +58,11 @@ function Dashboard() {
                                 <h1>Home Page</h1>
                             </div>
                             <div className="col-sm-6">
+                                <div className="">
+                                    <h1 style={{ color: "red" }}>
+                                        {returnError}
+                                    </h1>
+                                </div>
                                 <ol className="breadcrumb float-sm-right">
                                     <li className="breadcrumb-item">
                                         <a href="#">Home</a>
